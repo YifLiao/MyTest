@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+	"http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+	<!-- 设置主题风格 -->
+	<constant name="struts.ui.theme" value="simple" />
+	<!-- 动态方法调用 -->
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	<!-- 设置struts2的action由spring代理 -->
+	<constant name="struts.objectFactory" value="spring"/>
+	<package name="filter" extends="struts-default">
+		<!-- 过滤器 -->
+		<interceptors>
+			<interceptor name="myInterceptor" class="com.test.interceptor.MyInterceptor"/>
+			<interceptor-stack name="mydefault">
+			 	<interceptor-ref name="defaultStack"/>
+				<interceptor-ref name="myInterceptor">
+					<param name="param">页面保护</param>
+				</interceptor-ref>
+				<interceptor-ref name="fileUpload">
+					<!-- 配置允许上传文件类型 -->
+					<!-- <param name="allowedTypes">image/png,image/gif,image/jpeg</param> -->
+					<!-- 配置允许上传文件的大小 -->
+					<param name="maximumSize">30000000</param>
+				</interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<!-- 定义默认拦截器 -->
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<!-- /WEB-INF/content/jsp/user/tologin.jsp -->
+			<result name="login">/index.jsp</result>
+		</global-results>
+		<global-allowed-methods>regex:.*</global-allowed-methods>
+	 </package>
+	 <!-- **************************用户登录和注册*************************** -->
+	 <package name="user" extends="struts-default">
+	 	<global-allowed-methods>regex:.*</global-allowed-methods>
+		<action name="userAction_*" class="userAction" method="{1}">
+			<!-- 用户登录tologin -->
+			<result name="tologin">/WEB-INF/content/jsp/user/{1}.jsp</result>
+			<!-- 用户登录验证 -->
+			<result name="loginSuccess">/WEB-INF/content/jsp/user/{1}.jsp</result>
+			<!-- 登录失败 -->
+			<result name="login" type="redirectAction">userAction_tologin</result>
+			<!-- 用户注册toregister -->
+			<result name="toregister">/WEB-INF/content/jsp/user/{1}.jsp</result>
+			<!-- 用户注册验证 -->
+			<result name="register" type="redirectAction">userAction_tologin</result>
+		</action>
+	 </package>
+	 <!-- ********************************显示列表***************************** -->
+	 <package name="movielist" extends="struts-default">
+	 	<global-allowed-methods>regex:.*</global-allowed-methods>
+	 	
+	 </package>
+	 <!-- ******************************播放和上传视频***************************** -->
+	<package name="moviemethod" extends="filter">
+		<!-- <global-allowed-methods>regex:.*</global-allowed-methods> -->
+		<action name="movieAction_*" class="movieAction" method="{1}">
+			<!-- <interceptor-ref name="fileUpload">
+				配置允许上传文件类型
+				<param name="allowedTypes">image/png,image/gif,image/jpeg</param>
+				配置允许上传文件的大小
+				<param name="maximumSize">30000000</param>
+			</interceptor-ref>   -->          
+			<!-- 配置默认的拦截器 -->
+			<!-- <interceptor-ref name="defaultStack" /> -->
+			<param name="saveFilePath">movie</param>
+			<!-- 跳转到上传视频页面 -->
+			<result name="toupload">/WEB-INF/content/jsp/movie/{1}.jsp</result>
+			<!-- 上传视频 -->
+			<result name="upload">/WEB-INF/content/jsp/movie/{1}.jsp</result>
+			<result name="playmovie">/WEB-INF/content/jsp/movie/{1}.jsp</result>
+			<result name="tosearchmovie">/WEB-INF/content/jsp/movie/{1}.jsp</result>
+		</action>
+		
+	</package>
+	
+	<!-- ************************Ajax*********************** -->
+	<package name="ajax" extends="json-default">
+		<action name="addGoodCount" class="movieAction" method="addGoodCount">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="json" />
+			<result name="addGoodCount" type="json">
+				<param name="noCache">true</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		
+	</package>
+	
+</struts>
