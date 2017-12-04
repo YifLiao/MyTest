@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+		    "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+		    "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+	<constant name="struts.ui.theme" value="simple" />
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	<package name="filter" extends="struts-default">
+		<!-- 过滤器 -->
+		<interceptors>
+			<interceptor name="myInterceptor" class="com.test.interceptor.MyInterceptor"/>
+			<interceptor-stack name="mydefault">
+			 	<interceptor-ref name="defaultStack"/>
+				<interceptor-ref name="myInterceptor">
+					<param name="param">页面保护</param>
+				</interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<!-- 定义默认拦截器 -->
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login">/index.jsp</result>
+		</global-results>
+		<!-- <global-allowed-methods>regex:.*</global-allowed-methods> -->
+	 </package>
+	<!-- **************************登录、注册、注销******************************** -->
+	<package name="loginMethod" extends="struts-default">
+		<!-- 用户登录 -->
+		<action name="userlogin" class="com.test.action.UserLoginAction" method="login">
+			<result name="success" type="redirectAction">userlist</result>
+			<result name="login">/index.jsp</result>
+		</action>
+		<!-- 用户注册 -->
+		<action name="toregister" class="com.test.action.UserLoginAction" method="toregister">
+			<result name="success">/WEB-INF/content/jsp/user/register.jsp</result>
+		</action>
+		<!-- 注册成功  -->
+		<action name="userregister" class="com.test.action.UserLoginAction" method="register">
+			<result name="success">/WEB-INF/content/jsp/user/success.jsp</result>
+			<!-- 注册失败 -->
+			<result name="fail">/WEB-INF/content/jsp/user/fail.jsp</result>
+		</action>
+		<!-- 用户注销 -->
+		<action name="logout" class="com.test.action.UserLoginAction" method="logout">
+			<result name="success">/WEB-INF/content/jsp/logout.jsp</result>
+		</action>
+	</package>
+	<!-- **************************登录成功后的操作Action****************************** -->
+	<package name="userMethod" extends="filter" namespace="/">
+		<!-- *********************************用户管理********************************* -->
+		<!-- 获取用户列表 -->
+		<action name="userlist" class="com.test.action.UserAction" method="userList">
+			<result name="success">/WEB-INF/content/jsp/user/userlist.jsp</result>
+		</action>
+		<!-- 删除用户 -->
+ 		<action name="deleteuser" class="com.test.action.UserAction" method="deleteUser">
+			<result name="success" type="redirectAction">userlist</result>
+		</action> 
+		<!-- 添加用户 -->
+		<action name="toadduser" class="com.test.action.UserAction" method="toaddUser">
+			<result name="success">/WEB-INF/content/jsp/user/adduser.jsp</result>
+		</action> 
+		<!-- 用户添加完成 返回用户显示页面 -->
+ 		<action name="adduser" class="com.test.action.UserAction" method="addUser">
+			<result name="success" type="redirectAction">userlist</result>
+		</action>
+		<!-- 编辑用户 -->
+		<action name="toedituser" class="com.test.action.UserAction" method="toeditUser">
+			<result name="success">/WEB-INF/content/jsp/user/edituser.jsp</result>
+			<result name="input" type="redirectAction">userlist</result>
+		</action>
+		<action name="edituser" class="com.test.action.UserAction" method="editUser">
+			<result name="success" type="redirectAction">userlist</result>
+		</action>
+		<!-- 搜索用户  直接返回userlist-->
+<!-- 		<action name="searchuser" class="com.test.action.UserAction" method="searchUser">
+			<result name="success" type="redirectAction">userlist</result>
+		</action> -->
+		
+		<!-- *********************************部门管理********************************* -->
+		<!-- 获取部门列表 -->
+		<action name="deptlist" class="com.test.action.DeptAction" method="deptList">
+			<result name="success">/WEB-INF/content/jsp/dept/deptlist.jsp</result>
+		</action>
+		<!-- 删除部门 -->
+		<action name="deletedept" class="com.test.action.DeptAction" method="deleteDept">
+			<result name="success" type="redirectAction">deptlist</result>
+		</action> 
+		<!-- 添加部门 -->
+		<action name="toadddept" class="com.test.action.DeptAction" method="toaddDept">
+			<result name="success">/WEB-INF/content/jsp/dept/adddept.jsp</result>
+		</action> 
+		<!-- 添加完成 返回显示页面 -->
+		<action name="adddept" class="com.test.action.DeptAction" method="addDept">
+			<result name="success" type="redirectAction">deptlist</result>
+		</action>
+		<!-- 编辑部门 -->
+		<action name="toeditdept" class="com.test.action.DeptAction" method="toeditDept">
+			<result name="success">/WEB-INF/content/jsp/dept/editdept.jsp</result>
+			<result name="input" type="redirectAction">deptlist</result>
+		</action>
+		<action name="editdept" class="com.test.action.DeptAction" method="editDept">
+			<result name="success" type="redirectAction">deptlist</result>
+		</action>
+		
+		<!-- *********************************职位管理********************************* -->
+		<!-- 职位管理 -->
+		<!-- 获取职位列表 -->
+		<action name="joblist" class="com.test.action.JobAction" method="jobList">
+			<result name="success">/WEB-INF/content/jsp/job/joblist.jsp</result>
+		</action>
+		<!-- 删除职位 -->
+		<action name="deletejob" class="com.test.action.JobAction" method="deleteJob">
+			<result name="success" type="redirectAction">joblist</result>
+		</action> 
+		<!-- 添加职位 -->
+		<action name="toaddjob" class="com.test.action.JobAction" method="toaddJob">
+			<result name="success">/WEB-INF/content/jsp/job/addjob.jsp</result>
+		</action> 
+		<!-- 添加完成 返回显示页面 -->
+		<action name="addjob" class="com.test.action.JobAction" method="addJob">
+			<result name="success" type="redirectAction">joblist</result>
+		</action>
+		<!-- 编辑职位 -->
+		<action name="toeditjob" class="com.test.action.JobAction" method="toeditJob">
+			<result name="success">/WEB-INF/content/jsp/job/editjob.jsp</result>
+			<result name="input" type="redirectAction">joblist</result>
+		</action>
+		<action name="editjob" class="com.test.action.JobAction" method="editJob">
+			<result name="success" type="redirectAction">joblist</result>
+		</action>
+		
+		<!-- *********************************员工管理********************************* -->
+		<!-- 员工管理 -->
+		<!-- 获取员工列表 -->
+		<action name="empllist" class="com.test.action.EmplAction" method="empList">
+			<result name="success">/WEB-INF/content/jsp/employee/employeelist.jsp</result>
+		</action>
+		<!-- 搜索员工 -->
+
+		<!-- 删除员工 -->
+		<action name="deleteempl" class="com.test.action.EmplAction" method="deleteEmpl">
+			<result name="success" type="redirectAction">empllist</result>
+		</action>
+		<!-- 添加员工 -->
+		<action name="toaddempl" class="com.test.action.EmplAction" method="toaddEmpl">
+			<result name="success">/WEB-INF/content/jsp/employee/addempl.jsp</result>
+		</action>
+		<!-- 添加完成 返回显示页面 -->
+		<action name="addempl" class="com.test.action.EmplAction" method="addEmpl">
+			<result name="success" type="redirectAction">empllist</result>
+		</action>
+		<!-- 编辑员工 -->
+		<action name="toeditempl" class="com.test.action.EmplAction" method="toeditEmpl">
+			<result name="success">/WEB-INF/content/jsp/employee/editempl.jsp</result>
+			<result name="input" type="redirectAction">empllist</result>
+		</action>
+		<action name="editempl" class="com.test.action.EmplAction" method="editEmpl">
+			<result name="success" type="redirectAction">empllist</result>
+		</action>
+		<!-- *********************************文件管理********************************* -->
+		<!-- 文件管理 -->
+		<!-- 获取文件列表 -->
+		<action name="documlist" class="com.test.action.DocumAction" method="documList">
+			<result name="success">/WEB-INF/content/jsp/docum/documlist.jsp</result>
+		</action>
+		<!-- 删除文件 -->
+		<action name="deletedocum" class="com.test.action.DocumAction" method="deleteDocum">
+			<result name="success" type="redirectAction">documlist</result>
+		</action>
+		<!-- 上传文件 -->
+		<action name="touploaddocum" class="com.test.action.DocumAction" method="touploadDocum">
+			<result name="success">/WEB-INF/content/jsp/docum/uploaddocum.jsp</result>
+		</action> 
+		<!-- 添加完成 返回显示页面 -->
+		<action name="uploaddocum" class="com.test.action.DocumAction" method="uploadDocum">
+			<param name="savePath">upload</param>
+			<result name="success" type="redirectAction">documlist</result>
+		</action>
+		<!-- 下载文件 -->
+		<action name="downloaddocum" class="com.test.action.DocumAction">
+			<!-- 指明文件的路径 -->
+			<!-- <param name="downloadfilePath"></param> -->
+			<result name="success" type="stream">
+				<!-- 指获取下载文件输入流的入口方法 -->
+				<param name="inputName">targetFile</param>
+				<!-- 指明下载文件名 -->
+				<param name="contentDisposition">attachment;filename=${filename}</param>
+				<!-- 缓存buffer大小 -->
+				<param name="bufferSize">4096</param>
+			</result>
+		</action>
+		<!-- 编辑文件 -->
+		<action name="toeditdocum" class="com.test.action.DocumAction" method="toeditDocum">
+			<result name="success">/WEB-INF/content/jsp/docum/editdocum.jsp</result>
+			<result name="input" type="redirectAction">documlist</result>
+		</action>
+		<action name="editdocum" class="com.test.action.DocumAction" method="editDocum">
+			<result name="success" type="redirectAction">documlist</result>
+		</action>
+	</package>
+	<!-- *****************************Ajax**************************************** -->
+	<package name="test2" extends="json-default">
+		<!-- 登录名唯一 -->
+		<action name="checkloginname" class="com.test.action.UserLoginAction" method="checkLoginname">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="json" />
+			<result name="success" type="json">
+				<param name="noCache">true</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<!-- 身份证唯一 -->
+		<action name="checkCardId" class="com.test.action.EmplAction" method="checkCardId">
+			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="json" />
+			<result name="success" type="json">
+				<param name="noCache">true</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+</struts>
