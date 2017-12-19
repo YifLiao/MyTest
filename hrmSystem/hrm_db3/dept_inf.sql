@@ -1,9 +1,0 @@
-INSERT INTO `dept_inf` VALUES (1, '技术部', '技术部');
-INSERT INTO `dept_inf` VALUES (2, '运营部', '运营部');
-INSERT INTO `dept_inf` VALUES (3, '财务部', '财务部');
-INSERT INTO `dept_inf` VALUES (5, '总公办', '总公办');
-INSERT INTO `dept_inf` VALUES (6, '市场部', '市场部');
-INSERT INTO `dept_inf` VALUES (11, '教学部', '教学部');
-INSERT INTO `dept_inf` VALUES (14, '外联部', '外联部');
-INSERT INTO `dept_inf` VALUES (16, '电子协会', '电子爱好者交流的地方');
-INSERT INTO `dept_inf` VALUES (18, '学习部', '学习的部门');

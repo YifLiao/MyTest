@@ -1,9 +1,0 @@
-INSERT INTO `job_inf` VALUES (1, '职员', '职员');
-INSERT INTO `job_inf` VALUES (2, 'Java开发工程师', 'Java开发工程师');
-INSERT INTO `job_inf` VALUES (3, 'Java中级开发工程师', 'Java中级开发工程师');
-INSERT INTO `job_inf` VALUES (4, 'Java高级开发工程师', 'Java高级开发工程师');
-INSERT INTO `job_inf` VALUES (5, '系统管理员', '系统管理员');
-INSERT INTO `job_inf` VALUES (6, '架构师', '架构师');
-INSERT INTO `job_inf` VALUES (7, '主管', '主管');
-INSERT INTO `job_inf` VALUES (8, '经理', '经理');
-INSERT INTO `job_inf` VALUES (11, '总经理', '总经理');
